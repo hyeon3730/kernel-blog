@@ -1,0 +1,5 @@
+<header class="masthead"><div class="shell header-inner"><a class="brand" href="{{ site.Home.RelPermalink }}">KERNEL<span>.</span></a><div class="header-tools">
+{{/* Graph connection belongs to the next stage; do not expose a dead control. */}}
+{{ $publishedConcepts := 0 }}{{ range where site.RegularPages "Section" "posts" }}{{ if and (not .Draft) (or .Params.tree .Params.graph_anchor) }}{{ $publishedConcepts = add $publishedConcepts 1 }}{{ end }}{{ end }}
+{{ if gt $publishedConcepts 0 }}<button id="graph-button" disabled title="지식 그래프 연결을 준비하고 있습니다">지식 그래프</button>{{ end }}
+<button id="theme-toggle" aria-label="다크 모드로 전환"></button><button id="menu-toggle" aria-controls="left-nav" aria-expanded="false">목차</button></div></div></header>

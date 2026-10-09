@@ -1,0 +1,7 @@
+{{ $posts := . }}<nav class="feed-filters" aria-label="글 목록 필터">
+<div class="filter-group" role="group" aria-label="깊이"><span class="filter-label">깊이</span><button class="chip" data-depth="all" aria-pressed="true">전체<small>{{ len $posts }}</small></button>
+{{ range $name := slice "입문" "초급" "중급" "고급" "연구" }}<button class="chip" data-depth="{{ $name }}" aria-pressed="false">{{ $name }}<small>{{ len (where $posts "Params.pages" "intersect" (slice $name)) }}</small></button>{{ end }}</div>
+{{ range $key := slice "field" "series" }}<div class="filter-group"><label class="filter-label" for="filter-{{ $key }}">{{ if eq $key "field" }}분야{{ else }}시리즈{{ end }}</label><span class="select-wrap"><select id="filter-{{ $key }}" class="filter-select" data-filter="{{ $key }}"><option value="all">전체</option>
+{{ $values := slice }}{{ range $posts }}{{ with index .Params $key }}{{ $values = $values | append . }}{{ end }}{{ end }}{{ range $values | uniq | sort }}<option value="{{ . }}">{{ . }}</option>{{ end }}
+</select></span></div>{{ end }}
+<div class="filter-group"><label class="filter-label" for="filter-sort">정렬</label><span class="select-wrap"><select id="filter-sort" class="filter-select" data-filter="sort"><option value="latest">최신순</option><option value="updated">고친 순</option></select></span></div></nav>

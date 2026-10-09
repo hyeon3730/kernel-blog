@@ -1,0 +1,3 @@
+{{ define "main" }}
+<section class="profile-intro" aria-label="블로그 소개"><h2>같은 개념, 한 층 더 깊이</h2><p>쉬운 말에서 시작해 원리까지, 한 단계씩 내려가며 설명합니다. 필요한 곳에서 멈추시면 됩니다. AI뿐 아니라 하드웨어, 로봇, 네트워크까지, 공부하는 건 모두 이렇게 써 보려고 노력하겠습니다.</p></section>
+{{ partial "feed.html" (dict "page" . "posts" (where site.RegularPages "Section" "posts")) }}{{ end }}

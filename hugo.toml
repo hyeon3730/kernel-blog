@@ -1,0 +1,15 @@
+baseURL = 'https://hyeon3730.github.io/kernel-blog/'
+locale = 'ko'
+defaultContentLanguage = 'ko'
+title = 'KERNEL'
+timeZone = 'Asia/Seoul'
+cleanDestinationDir = true
+
+[markup.goldmark.extensions.passthrough]
+enable = true
+[markup.goldmark.extensions.passthrough.delimiters]
+block = [['$$', '$$']]
+inline = [['$', '$']]
+
+[caches.images]
+dir = ':cacheDir/images'

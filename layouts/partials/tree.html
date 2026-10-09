@@ -1,0 +1,10 @@
+{{ $posts := where site.RegularPages "Section" "posts" }}
+<aside id="left-nav" class="sidebar" aria-label="사이트 나무"><button id="drawer-close" class="drawer-close">목차 닫기</button><h2>개념 나무</h2>
+{{ if $posts }}<p class="legend">● 글 있음, ○ 공부함</p><label class="nav-search">제목 검색<input id="search-input" type="search" autocomplete="off" placeholder="개념 또는 글 제목"></label><div id="search-results" class="search-results" aria-live="polite"></div>
+<nav id="section-tree" aria-label="영토와 개념"><ul class="branch">
+{{ range $posts.ByTitle }}{{ $page := . }}{{ $anchors := slice }}
+{{ with .Params.tree }}{{ if reflect.IsSlice . }}{{ $anchors = . }}{{ else }}{{ $anchors = slice . }}{{ end }}{{ else }}{{ with .Params.graph_anchor }}<li><a class="concept" href="{{ $page.RelPermalink }}" data-anchor="{{ . }}"><span class="concept-title">{{ $page.Title }}</span><span class="concept-dot" aria-label="글 있음">●</span></a></li>{{ end }}{{ end }}
+{{ range $anchors }}<li><details open><summary class="region-row">{{ . }}<small>1</small></summary><ul class="branch"><li><a class="concept" href="{{ $page.RelPermalink }}"><span class="concept-title">{{ $page.Title }}</span><span class="concept-dot" aria-label="글 있음">●</span></a></li></ul></details></li>{{ end }}
+{{ end }}</ul></nav>
+{{ else }}<p class="legend">글이 생기면 여기에 개념이 자랍니다.</p>{{ end }}
+<a class="tree-help" href="{{ "howto/" | relURL }}" data-howto>이 블로그 읽는 법</a></aside>

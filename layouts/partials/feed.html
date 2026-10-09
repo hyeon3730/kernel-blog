@@ -1,0 +1,5 @@
+<header class="feed-head"><div class="head-line"><h1>{{ if .page.IsHome }}글 목록{{ else }}{{ .page.Title }}{{ end }}</h1><span class="count">발행 {{ len .posts }}편</span></div><p>아래 깊이 단추로 골라 보세요.</p></header>
+{{ partial "filters.html" .posts }}
+<div class="feed-result" role="status"><span id="feed-count">글 {{ len .posts }}편</span><a href="{{ .page.RelPermalink }}" id="filter-reset" hidden>필터 초기화</a></div>
+<p class="empty feed-empty" {{ if .posts }}hidden{{ end }}>아직 글이 없습니다. 첫 글을 준비하고 있습니다.</p>
+<ol class="feed-list">{{ range .posts.ByDate.Reverse }}{{ partial "card.html" . }}{{ end }}</ol>

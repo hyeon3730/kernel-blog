@@ -1,0 +1,12 @@
+{{ define "main" }}
+<div data-article data-title="{{ .Title }}"><header class="article-head"><nav class="breadcrumb"><a href="{{ site.Home.RelPermalink }}">글 목록</a>{{ with .Params.series }}<span>{{ . }}</span>{{ end }}</nav><h1 tabindex="-1">{{ .Title }}</h1>{{ if eq .Section "posts" }}<div class="meta"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006.01.02" }}</time>{{ with .Params.version }}<span>v{{ . }}</span>{{ end }}</div>{{ end }}</header>
+{{ $pattern := `<!--page:\s*([^|]+?)\s*\|\s*([^>]+?)-->` }}{{ $markers := findRE $pattern .RawContent }}
+{{ if $markers }}{{ $page := . }}{{ $parts := split (replaceRE $pattern "@@KERNEL_PAGE@@" .RawContent) "@@KERNEL_PAGE@@" }}
+<div class="steps" role="tablist" aria-label="읽기 단계">{{ range $i, $marker := $markers }}{{ $name := trim (replaceRE $pattern "$1" $marker) " " }}<button id="step-{{ $i }}" role="tab" aria-controls="page-{{ $i }}" aria-selected="{{ eq $i 0 }}" tabindex="{{ if eq $i 0 }}0{{ else }}-1{{ end }}" data-page="{{ $i }}"><span class="n">{{ add $i 1 }}단계</span>{{ $name }}</button>{{ end }}</div>
+<div class="article-layout"><article class="article-body">
+{{ range $i, $marker := $markers }}{{ $name := trim (replaceRE $pattern "$1" $marker) " " }}<section id="page-{{ $i }}" class="content-section reading-page" role="tabpanel" aria-labelledby="step-{{ $i }}" data-page-name="{{ $name }}" {{ if ne $i 0 }}hidden{{ end }}>
+{{ $page.RenderString (dict "display" "block") (index $parts (add $i 1)) }}
+<nav class="page-nav" aria-label="단계 이동">{{ if gt $i 0 }}<button data-go="{{ sub $i 1 }}">← {{ trim (replaceRE $pattern "$1" (index $markers (sub $i 1))) " " }}로</button>{{ else }}<span></span>{{ end }}
+{{ if lt $i (sub (len $markers) 1) }}<span class="stop">여기서 멈추셔도 됩니다</span><button class="next" data-go="{{ add $i 1 }}">좀 더 깊이 가볼까요? {{ trim (replaceRE $pattern "$1" (index $markers (add $i 1))) " " }} →</button>{{ else }}<span class="stop">마지막 단계입니다</span>{{ end }}</nav></section>{{ end }}
+</article><aside class="toc" aria-label="현재 쪽 목차"><strong class="toc-title">이 쪽에서</strong><nav data-toc></nav></aside></div>
+{{ else }}<article class="article-body plain-page content-section">{{ .Content }}</article>{{ end }}</div>{{ end }}
